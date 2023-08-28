@@ -23,4 +23,4 @@ jobs:
       run: ./mvnw clean package  
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "target/*.jar"
+        artifacts: "spring-petclinic-**/target/*.jar"
