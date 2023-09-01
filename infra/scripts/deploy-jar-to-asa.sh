@@ -25,9 +25,8 @@ declare -a artifact_arr=("admin-server" "customers-service" "vets-service" "visi
 
 az extension add --name spring --upgrade
 
-for item in "${artifact_arr[@]}"
-do
-  jar_file_name="$item-$version.jar"
+deployJar(artifact) {
+  jar_file_name="$artifact-$version.jar"
   source_url="$base_url/v$version/$jar_file_name"
   # Download binary
   echo "Downloading binary from $source_url to $jar_file_name"
@@ -37,11 +36,20 @@ do
       curl -H "Authorization: $auth_header" "$source_url" -o $jar_file_name
   fi
 
-  config_file_pattern="application,$item"
-  az spring application-configuration-service bind --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --app $item
-  az spring service-registry bind --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --app $item
-  az spring app deploy --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --name $item --artifact-path $jar_file_name --config-file-pattern $config_file_pattern
+  config_file_pattern="application,$artifact"
+  az spring application-configuration-service bind --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --app $artifact
+  az spring service-registry bind --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --app $artifact
+  az spring app deploy --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --name $artifact --artifact-path $jar_file_name --config-file-pattern $config_file_pattern
+}
+
+for item in "${artifact_arr[@]}"
+do
+  deployJar "$item" &
 done
+
+wait
+
+echo "Deployed to Azure Spring Cloud successfully."
 
 # Delete uami generated before exiting the script
 az identity delete --ids ${AZ_SCRIPTS_USER_ASSIGNED_IDENTITY}
