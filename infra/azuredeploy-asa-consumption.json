@@ -156,8 +156,6 @@
     "userAssignedManagedIdentityName": "[format('{0}{1}', variables('abbrs').managedIdentityUserAssignedIdentities, variables('resourceToken'))]",
     "const_ownerRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
     "const_uploadScriptName": "upload-jar-to-asa.sh",
-    "const_checkScriptName": "check-provision-state.ps1",
-    "const_checkingBuilderStateDeploymentName": "checking-build-service-builder-state",
     "ref_identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedManagedIdentityName'))]",
     "name_deploymentScriptName": "asa-enterprise-deployment-script",
     "name_roleAssignmentName": "[guid(format('{0}{1}Role assignment in group{0}', resourceGroup().name, variables('ref_identityId')))]",

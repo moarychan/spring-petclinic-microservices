@@ -25,9 +25,9 @@ Before delving into the step-by-step execution of the application, you can simpl
 
 | Deploy to Azure Spring Apps | |
 |--|--|
-| Consumption plan   |Not supported|
+| Consumption plan   |[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmoarychan%2Fspring-petclinic-microservices%2Fpr-demo%2Finfra%2Fazuredeploy-asa-consumption.json)|
 | Basic/Standard plan|Not supported|
-| Enterprise plan    |[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2Fspring-petclinic-microservices%2Fazure%2Finfra%2Fazuredeploy.json)|
+| Enterprise plan    |[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmoarychan%2Fspring-petclinic-microservices%2Fpr-demo%2Finfra%2Fazuredeploy-asa-enterprise.json)|
 
 ## Run with AZD
 
