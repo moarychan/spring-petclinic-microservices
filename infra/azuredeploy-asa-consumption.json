@@ -175,7 +175,7 @@
         "appLogsConfiguration": {
           "destination": "log-analytics",
           "logAnalyticsConfiguration": {
-            "customerId": "reference(resourceId('Microsoft.OperationalInsights/workspaces', 'workspaceName'), '2017-03-15-preview').customerId"
+            "customerId": "reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName')), '2017-03-15-preview').customerId"
           }
         },
         "workloadProfiles": [
