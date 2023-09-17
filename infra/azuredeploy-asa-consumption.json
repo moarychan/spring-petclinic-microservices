@@ -175,7 +175,8 @@
         "appLogsConfiguration": {
           "destination": "log-analytics",
           "logAnalyticsConfiguration": {
-            "customerId": "resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName')).customerId"
+            "customerId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName')), '2022-10-01').customerId]",
+            "sharedKey": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName')), '2022-10-01').sharedKeys.primarySharedKey]"
           }
         },
         "workloadProfiles": [
