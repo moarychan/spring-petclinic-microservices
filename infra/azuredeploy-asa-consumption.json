@@ -345,7 +345,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', parameters('asaInstanceName'), parameters('adminServerAppName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('adminServerAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
       ]
     },
@@ -368,7 +368,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', parameters('asaInstanceName'), parameters('customersServiceAppName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('customersServiceAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
       ]
     },
@@ -391,7 +391,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', parameters('asaInstanceName'), parameters('vetsServiceAppName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('vetsServiceAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
       ]
     },
@@ -414,7 +414,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', parameters('asaInstanceName'), parameters('visitsServiceAppName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('visitsServiceAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
       ]
     },
@@ -437,7 +437,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', parameters('asaInstanceName'), parameters('apiGatewayAppName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('apiGatewayAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
       ]
     },
