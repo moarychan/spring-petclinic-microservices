@@ -19,8 +19,8 @@ if [[ -z "$ASA_SERVICE_NAME" ]]; then
 fi
 
 az extension add --name spring --upgrade
-az spring config-server enable --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $ASA_SERVICE_NAME
-az spring eureka-server enable --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $ASA_SERVICE_NAME
-az spring config-server git set --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $ASA_SERVICE_NAME --uri https://github.com/Azure-Samples/spring-petclinic-microservices-config.git --label master
+az spring config-server enable --resource-group $RESOURCE_GROUP --name $ASA_SERVICE_NAME
+az spring eureka-server enable --resource-group $RESOURCE_GROUP --name $ASA_SERVICE_NAME
+az spring config-server git set --resource-group $RESOURCE_GROUP --name $ASA_SERVICE_NAME --uri https://github.com/Azure-Samples/spring-petclinic-microservices-config.git --label master
 
 echo "The managed components have been successfully enabled."
