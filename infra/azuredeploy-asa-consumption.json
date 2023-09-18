@@ -329,6 +329,7 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('name_roleAssignmentName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_activationComponentsScriptName'))]",
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('adminServerAppName'))]",
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('customersServiceAppName'))]",
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('vetsServiceAppName'))]",
