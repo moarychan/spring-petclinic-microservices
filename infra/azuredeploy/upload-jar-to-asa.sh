@@ -38,22 +38,28 @@ auth_header="no-auth"
 version="3.0.1"
 declare -a artifact_arr=("admin-server" "customers-service" "vets-service" "visits-service" "api-gateway")
 declare -A app_relative_path_map
+declare -A app_upload_url_map
 az extension add --name spring --upgrade
 
-uploadJar() {
+initMap() {
   get_resource_upload_url_result=$(az rest -m post -u "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.AppPlatform/Spring/$ASA_SERVICE_NAME/apps/$1/getResourceUploadUrl?api-version=2023-05-01-preview")
   upload_url=$(echo $get_resource_upload_url_result | jq -r '.uploadUrl')
   relative_path=$(echo $get_resource_upload_url_result | jq -r '.relativePath')
+  app_upload_url_map[$1]=$upload_url
+  app_relative_path_map[$1]=$relative_path
+}
+
+uploadJar() {
   jar_file_name="$1-$version.jar"
   source_url="$base_url/v$version/$jar_file_name"
   auth_header="no-auth"
 
-  storage_account_name=$(echo $upload_url | awk -F'[/.]' '{print $3}')
-  storage_endpoint=$(echo $upload_url | awk -F'/' '{print "https://" $3}')
-  share_name=$(echo $upload_url | awk -F'/' '{print $4}')
-  folder=$(echo $upload_url | awk -F'?' '{print $1}' | awk -F'/' '{for(i=5;i<NF-1;i++) printf "%s/",$i; print $(NF-1)}')
-  path=$(echo $upload_url | awk -F'[/?]' '{print $(NF-1)}')
-  sas_token=$(echo $upload_url | awk -F'?' '{print $2}')
+  storage_account_name=$(echo ${app_upload_url_map[$1]} | awk -F'[/.]' '{print $3}')
+  storage_endpoint=$(echo ${app_upload_url_map[$1]} | awk -F'/' '{print "https://" $3}')
+  share_name=$(echo ${app_upload_url_map[$1]} | awk -F'/' '{print $4}')
+  folder=$(echo ${app_upload_url_map[$1]} | awk -F'?' '{print $1}' | awk -F'/' '{for(i=5;i<NF-1;i++) printf "%s/",$i; print $(NF-1)}')
+  path=$(echo ${app_upload_url_map[$1]} | awk -F'[/?]' '{print $(NF-1)}')
+  sas_token=$(echo ${app_upload_url_map[$1]} | awk -F'?' '{print $2}')
 
   # Download binary
   echo "Downloading binary from $source_url to $path"
@@ -69,12 +75,11 @@ uploadJar() {
   echo "az storage file upload -s $share_name --source $path --account-name  $storage_account_name --file-endpoint $storage_endpoint --sas-token $sas_token -p $folder"
 
   az storage file upload -s $share_name --source $path --account-name  $storage_account_name --file-endpoint "$storage_endpoint" --sas-token "$sas_token"  -p "$folder"
-
-  app_relative_path_map[$1]=$relative_path
 }
 
 for item in "${artifact_arr[@]}"
 do
+  initMap $item
   uploadJar $item &
 done
 
@@ -94,7 +99,7 @@ while [ $jobs_count -gt 0 ]; do
 done
 
 # Write outputs to deployment script output path
-result=$(jq -n -c --arg adminServer "${app_relative_path_map['admin-server']}" --arg customersService "${app_relative_path_map['customers-service']}" --arg vetsService "${app_relative_path_map['vets-service']}" --arg visitsService "${app_relative_path_map['visits-service']}" --arg apiGateway "${app_relative_path_map['api-gateway']}"  '{admin_server: $adminServer, customers_service: $customersService, vets_service: $vetsService, visits_service: $visitsService, api_gateway: $apiGateway}')
+result=$(jq -n -c --arg adminServer "${app_relative_path_map[${artifact_arr[0]}]}" --arg customersService "${app_relative_path_map[${artifact_arr[1]}]}" --arg vetsService "${app_relative_path_map[${artifact_arr[2]}]}" --arg visitsService "${app_relative_path_map[${artifact_arr[3]}]}" --arg apiGateway "${app_relative_path_map[${artifact_arr[4]}]}"  '{admin_server: $adminServer, customers_service: $customersService, vets_service: $vetsService, visits_service: $visitsService, api_gateway: $apiGateway}')
 echo $result > $AZ_SCRIPTS_OUTPUT_PATH
 
 echo "Uploaded successfully."
