@@ -347,7 +347,8 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          }
+          },
+          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
         },
         "source": {
           "type": "BuildResult",
@@ -368,7 +369,8 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          }
+          },
+          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
         },
         "source": {
           "type": "BuildResult",
@@ -389,7 +391,8 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          }
+          },
+          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
         },
         "source": {
           "type": "BuildResult",
@@ -410,7 +413,8 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          }
+          },
+          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
         },
         "source": {
           "type": "BuildResult",
@@ -431,7 +435,8 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          }
+          },
+          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
         },
         "source": {
           "type": "BuildResult",
