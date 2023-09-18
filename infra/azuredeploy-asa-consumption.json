@@ -159,7 +159,7 @@
     "const_enableManagedComponents": "enable-managed-components.sh",
     "ref_identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedManagedIdentityName'))]",
     "name_activationComponentsScriptName": "asa-consumption-activation-components-script",
-    "name_deploymentScriptName": "asa-consumption-deployment-script",
+    "name_uploadScriptName": "asa-consumption-upload-script",
     "name_roleAssignmentName": "[guid(format('{0}{1}Role assignment in group{0}', resourceGroup().name, variables('ref_identityId')))]",
     "tags": {
       "spring-cloud-azure": "true",
@@ -325,7 +325,7 @@
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
-      "name": "[variables('name_deploymentScriptName')]",
+      "name": "[variables('name_uploadScriptName')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('name_roleAssignmentName'))]",
@@ -378,13 +378,13 @@
         "source": {
           "type": "Jar",
           "runtimeVersion": "Java_17",
-          "relativePath": "[reference(variables('name_deploymentScriptName')).outputs.admin_server]"
+          "relativePath": "[reference(variables('name_uploadScriptName')).outputs.admin_server]"
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('adminServerAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_activationComponentsScriptName'))]",
-        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
+        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_uploadScriptName'))]"
       ]
     },
     {
@@ -402,13 +402,13 @@
         "source": {
           "type": "Jar",
           "runtimeVersion": "Java_17",
-          "relativePath": "[reference(variables('name_deploymentScriptName')).outputs.customers_service]"
+          "relativePath": "[reference(variables('name_uploadScriptName')).outputs.customers_service]"
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('customersServiceAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_activationComponentsScriptName'))]",
-        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
+        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_uploadScriptName'))]"
       ]
     },
     {
@@ -426,13 +426,13 @@
         "source": {
           "type": "Jar",
           "runtimeVersion": "Java_17",
-          "relativePath": "[reference(variables('name_deploymentScriptName')).outputs.vets_service]"
+          "relativePath": "[reference(variables('name_uploadScriptName')).outputs.vets_service]"
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('vetsServiceAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_activationComponentsScriptName'))]",
-        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
+        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_uploadScriptName'))]"
       ]
     },
     {
@@ -450,13 +450,13 @@
         "source": {
           "type": "Jar",
           "runtimeVersion": "Java_17",
-          "relativePath": "[reference(variables('name_deploymentScriptName')).outputs.visits_service]"
+          "relativePath": "[reference(variables('name_uploadScriptName')).outputs.visits_service]"
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('visitsServiceAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_activationComponentsScriptName'))]",
-        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
+        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_uploadScriptName'))]"
       ]
     },
     {
@@ -474,13 +474,13 @@
         "source": {
           "type": "Jar",
           "runtimeVersion": "Java_17",
-          "relativePath": "[reference(variables('name_deploymentScriptName')).outputs.api_gateway]"
+          "relativePath": "[reference(variables('name_uploadScriptName')).outputs.api_gateway]"
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('apiGatewayAppName'))]",
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_activationComponentsScriptName'))]",
-        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_deploymentScriptName'))]"
+        "[resourceId('Microsoft.Resources/deploymentScripts', variables('name_uploadScriptName'))]"
       ]
     },
     {
