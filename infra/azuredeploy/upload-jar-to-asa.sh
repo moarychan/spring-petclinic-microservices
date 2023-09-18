@@ -33,7 +33,7 @@ if [[ -z "$ASA_SERVICE_NAME" ]]; then
   exit 1
 fi
 
-base_url="https://github.com/Azure-Samples/spring-petclinic-microservices/releases/download"
+base_url="https://github.com/moarychan/spring-petclinic-microservices/releases/download"
 auth_header="no-auth"
 version="3.0.1"
 declare -a artifact_arr=("admin-server" "customers-service" "vets-service" "visits-service" "api-gateway")

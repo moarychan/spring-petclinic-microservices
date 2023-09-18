@@ -160,9 +160,6 @@
     "ref_identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedManagedIdentityName'))]",
     "name_deploymentScriptName": "asa-enterprise-deployment-script",
     "name_roleAssignmentName": "[guid(format('{0}{1}Role assignment in group{0}', resourceGroup().name, variables('ref_identityId')))]",
-    "appDeploymentEnvironmentVariables": {
-      "SPRING_CONFIG_IMPORT": ""
-    },
     "tags": {
       "spring-cloud-azure": "true",
       "deploy-to-azure-button": "true"
@@ -347,8 +344,7 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          },
-          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
+          }
         },
         "source": {
           "type": "BuildResult",
@@ -369,8 +365,7 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          },
-          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
+          }
         },
         "source": {
           "type": "BuildResult",
@@ -391,8 +386,7 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          },
-          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
+          }
         },
         "source": {
           "type": "BuildResult",
@@ -413,8 +407,7 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          },
-          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
+          }
         },
         "source": {
           "type": "BuildResult",
@@ -435,8 +428,7 @@
           "resourceRequests": {
             "cpu": "1",
             "memory": "2Gi"
-          },
-          "environmentVariables": "[variables('appDeploymentEnvironmentVariables')]"
+          }
         },
         "source": {
           "type": "BuildResult",
