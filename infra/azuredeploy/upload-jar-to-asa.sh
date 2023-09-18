@@ -99,7 +99,7 @@ while [ $jobs_count -gt 0 ]; do
 done
 
 # Write outputs to deployment script output path
-result=$(jq -n -c --arg adminServer "${app_relative_path_map[${artifact_arr[0]}]}" --arg customersService "${app_relative_path_map[${artifact_arr[1]}]}" --arg vetsService "${app_relative_path_map[${artifact_arr[2]}]}" --arg visitsService "${app_relative_path_map[${artifact_arr[3]}]}" --arg apiGateway "${app_relative_path_map[${artifact_arr[4]}]}"  '{admin_server: $adminServer, customers_service: $customersService, vets_service: $vetsService, visits_service: $visitsService, api_gateway: $apiGateway}')
+result=$(jq -n -c --arg adminServer "${app_relative_path_map[${artifact_arr[0]}]}" --arg customersService "${app_relative_path_map[${artifact_arr[1]}]}" --arg vetsService "${app_relative_path_map[${artifact_arr[2]}]}" --arg visitsService "${app_relative_path_map[${artifact_arr[3]}]}" --arg apiGateway "${app_relative_path_map[${artifact_arr[4]}]}" '{admin_server: $adminServer, customers_service: $customersService, vets_service: $vetsService, visits_service: $visitsService, api_gateway: $apiGateway}')
 echo $result > $AZ_SCRIPTS_OUTPUT_PATH
 
 echo "Uploaded successfully."
