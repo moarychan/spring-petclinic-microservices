@@ -226,7 +226,7 @@
         }
       },
       "properties": {
-        "AzCliVersion": "2.41.0",
+        "AzCliVersion": "2.46.0",
         "primaryScriptUri": "[uri(deployment().properties.templateLink.uri, concat('azuredeploy/', variables('const_enableManagedComponents')))]",
         "environmentVariables": [
           {
@@ -343,7 +343,7 @@
         }
       },
       "properties": {
-        "AzCliVersion": "2.41.0",
+        "AzCliVersion": "2.46.0",
         "primaryScriptUri": "[uri(deployment().properties.templateLink.uri, concat('azuredeploy/', variables('const_uploadScriptName')))]",
         "environmentVariables": [
           {
