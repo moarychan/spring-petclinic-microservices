@@ -158,8 +158,8 @@
     "const_uploadScriptName": "upload-jar-to-asa.sh",
     "const_enableManagedComponents": "enable-managed-components.sh",
     "ref_identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedManagedIdentityName'))]",
-    "name_activationComponentsScriptName": "asa-consumption-activation-components-script",
-    "name_uploadScriptName": "asa-consumption-upload-script",
+    "name_activationComponentsScriptName": "asa-consumption-activation-components",
+    "name_uploadScriptName": "asa-consumption-upload",
     "name_roleAssignmentName": "[guid(format('{0}{1}Role assignment in group{0}', resourceGroup().name, variables('ref_identityId')))]",
     "tags": {
       "spring-cloud-azure": "true",

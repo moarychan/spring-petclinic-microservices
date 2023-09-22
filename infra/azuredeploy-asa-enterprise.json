@@ -158,7 +158,7 @@
     "const_checkScriptName": "check-provision-state.ps1",
     "const_checkingBuilderStateDeploymentName": "checking-build-service-builder-state",
     "ref_identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedManagedIdentityName'))]",
-    "name_deploymentScriptName": "asa-enterprise-deployment-script",
+    "name_deploymentScriptName": "asa-enterprise-deployment",
     "name_roleAssignmentName": "[guid(format('{0}{1}Role assignment in group{0}', resourceGroup().name, variables('ref_identityId')))]",
     "tags": {
       "spring-cloud-azure": "true",
