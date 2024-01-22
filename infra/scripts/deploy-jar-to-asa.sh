@@ -19,9 +19,11 @@ if [[ -z "$ASA_SERVICE_NAME" ]]; then
 fi
 
 base_url="https://github.com/Azure-Samples/spring-petclinic-microservices/releases/download"
+#source_code_url="https://github.com/Azure-Samples/spring-petclinic-microservices/archive/refs/tags/v$version.zip"
+source_code_url="https://github.com/moarychan/spring-petclinic-microservices/archive/refs/tags/v$version.zip"
 auth_header="no-auth"
 version="3.0.1"
-declare -a artifact_arr=("admin-server" "customers-service" "vets-service" "visits-service" "api-gateway")
+declare -a artifact_arr=("customers-service" "vets-service" "visits-service")
 
 az extension add --name spring --upgrade
 
@@ -42,10 +44,28 @@ deployJar() {
   az spring app deploy --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --name $1 --artifact-path $jar_file_name --config-file-pattern $config_file_pattern
 }
 
+deployFrontend() {
+  project_name="spring-petclinic-microservices"
+  zip_file_name="$project_name-$version.zip"
+  # Download binary
+  echo "Downloading binary from $source_code_url to $zip_file_name"
+  if [ "$auth_header" == "no-auth" ]; then
+      curl -L "$source_code_url" -o $zip_file_name
+  else
+      curl -H "Authorization: $auth_header" "$source_code_url" -o $zip_file_name
+  fi
+
+  unzip $zip_file_name
+  cd $project_name
+  az spring app deploy --resource-group $RESOURCE_GROUP --service $ASA_SERVICE_NAME --name frontend --build-env BP_WEB_SERVER=nginx --source-path ./spring-petclinic-frontend
+}
+
 for item in "${artifact_arr[@]}"
 do
   deployJar $item &
 done
+
+deployFrontend &
 
 jobs_count=$(jobs -p | wc -l)
 

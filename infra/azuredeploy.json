@@ -144,11 +144,10 @@
     "location": "[resourceGroup().location]",
     "resourceToken": "[toLower(uniqueString(subscription().id, resourceGroup().name, variables('location')))]",
     "asaInstanceName": "[format('{0}{1}', variables('abbrs').springApps, variables('resourceToken'))]",
-    "adminServerAppName": "admin-server",
     "customersServiceAppName": "customers-service",
     "vetsServiceAppName": "vets-service",
     "visitsServiceAppName": "visits-service",
-    "apiGatewayAppName": "api-gateway",
+    "frontendAppName": "frontend",
     "logAnalyticsName": "[format('{0}{1}', variables('abbrs').operationalInsightsWorkspaces, variables('resourceToken'))]",
     "applicationInsightsName": "[format('{0}{1}', variables('abbrs').insightsComponents, variables('resourceToken'))]",
     "applicationInsightsDashboardName": "[format('{0}{1}', variables('abbrs').portalDashboards, variables('resourceToken'))]",
@@ -168,7 +167,7 @@
   "resources": [
     {
       "type": "Microsoft.AppPlatform/Spring",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[variables('asaInstanceName')]",
       "location": "[variables('location')]",
       "tags": "[variables('tags')]",
@@ -179,7 +178,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/buildServices",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -190,36 +189,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps",
-      "apiVersion": "2023-05-01-preview",
-      "name": "[format('{0}/{1}', variables('asaInstanceName'), variables('adminServerAppName'))]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
-      ],
-      "properties": {
-        "public": true,
-        "httpsOnly": false,
-        "temporaryDisk": {
-          "sizeInGB": 5,
-          "mountPath": "/tmp"
-        },
-        "persistentDisk": {
-          "sizeInGB": 0,
-          "mountPath": "/persistent"
-        },
-        "enableEndToEndTLS": false,
-        "ingressSettings": {
-          "readTimeoutInSeconds": 300,
-          "sendTimeoutInSeconds": 60,
-          "sessionCookieMaxAge": 0,
-          "sessionAffinity": "None",
-          "backendProtocol": "Default"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.AppPlatform/Spring/apps",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}', variables('asaInstanceName'), variables('customersServiceAppName'))]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -247,7 +217,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}', variables('asaInstanceName'), variables('vetsServiceAppName'))]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -275,7 +245,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}', variables('asaInstanceName'), variables('visitsServiceAppName'))]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -303,14 +273,14 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps",
-      "apiVersion": "2023-05-01-preview",
-      "name": "[format('{0}/{1}', variables('asaInstanceName'), variables('apiGatewayAppName'))]",
+      "apiVersion": "2023-11-01-preview",
+      "name": "[format('{0}/{1}', variables('asaInstanceName'), variables('frontendAppName'))]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
       ],
       "properties": {
-        "public": true,
+        "public": false,
         "httpsOnly": false,
         "temporaryDisk": {
           "sizeInGB": 5,
@@ -332,29 +302,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps/deployments",
-      "apiVersion": "2023-05-01-preview",
-      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('adminServerAppName'), 'default')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('adminServerAppName'))]"
-
-      ],
-      "properties": {
-        "active": true,
-        "deploymentSettings": {
-          "resourceRequests": {
-            "cpu": "1",
-            "memory": "2Gi"
-          }
-        },
-        "source": {
-          "type": "BuildResult",
-          "buildResultId": "<default>"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.AppPlatform/Spring/apps/deployments",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('customersServiceAppName'), 'default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('customersServiceAppName'))]"
@@ -375,7 +323,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps/deployments",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('vetsServiceAppName'), 'default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('vetsServiceAppName'))]"
@@ -396,7 +344,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps/deployments",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('visitsServiceAppName'), 'default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('visitsServiceAppName'))]"
@@ -417,10 +365,10 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apps/deployments",
-      "apiVersion": "2023-05-01-preview",
-      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('apiGatewayAppName'), 'default')]",
+      "apiVersion": "2023-11-01-preview",
+      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('frontendAppName'), 'default')]",
       "dependsOn": [
-        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('apiGatewayAppName'))]"
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('frontendAppName'))]"
       ],
       "properties": {
         "active": true,
@@ -465,11 +413,10 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('name_roleAssignmentName'))]",
-        "[resourceId('Microsoft.AppPlatform/Spring/apps/deployments', variables('asaInstanceName'), variables('adminServerAppName'), 'default')]",
         "[resourceId('Microsoft.AppPlatform/Spring/apps/deployments', variables('asaInstanceName'), variables('customersServiceAppName'), 'default')]",
         "[resourceId('Microsoft.AppPlatform/Spring/apps/deployments', variables('asaInstanceName'), variables('vetsServiceAppName'), 'default')]",
         "[resourceId('Microsoft.AppPlatform/Spring/apps/deployments', variables('asaInstanceName'), variables('visitsServiceAppName'), 'default')]",
-        "[resourceId('Microsoft.AppPlatform/Spring/apps/deployments', variables('asaInstanceName'), variables('apiGatewayAppName'), 'default')]"
+        "[resourceId('Microsoft.AppPlatform/Spring/apps/deployments', variables('asaInstanceName'), variables('frontendAppName'), 'default')]"
       ],
       "kind": "AzurePowerShell",
       "identity": {
@@ -501,7 +448,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/buildservices/builders/buildpackBindings",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default/default/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deploymentScripts', variables('const_checkingBuilderStateDeploymentName'))]"
@@ -1762,7 +1709,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/monitoringSettings",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[format('{0}/{1}', variables('asaInstanceName'), 'default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]",
@@ -1798,7 +1745,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/applicationAccelerators",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -1806,7 +1753,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/applicationLiveViews",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -1814,7 +1761,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/configurationServices",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -1844,7 +1791,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/devToolPortals",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -1863,7 +1810,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/gateways",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -1886,8 +1833,85 @@
       }
     },
     {
+      "type": "Microsoft.AppPlatform/Spring/gateways/routeConfigs",
+      "apiVersion": "2023-03-01-preview",
+      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('customersServiceAppName'), 'routeConfig')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.AppPlatform/Spring/gateways', concat(variables('asaInstanceName'), '/default')]",
+        "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('customersServiceAppName'))]"
+      ],
+      "properties": {
+        "appResourceId": "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('customersServiceAppName'))]",
+        "routes": [
+          {
+            "filters": [ "StripPrefix=2" ],
+            "predicates": [ "Path=/api/customer/**" ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.AppPlatform/Spring/gateways/routeConfigs",
+      "apiVersion": "2023-03-01-preview",
+      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('vetsServiceAppName'), 'routeConfig')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.AppPlatform/Spring/gateways', concat(variables('asaInstanceName'), '/default')]",
+        "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('vetsServiceAppName'))]"
+      ],
+      "properties": {
+        "appResourceId": "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('vetsServiceAppName'))]",
+        "routes": [
+          {
+            "filters": [ "StripPrefix=2" ],
+            "predicates": [ "Path=/api/vet/**" ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.AppPlatform/Spring/gateways/routeConfigs",
+      "apiVersion": "2023-03-01-preview",
+      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('visitsServiceAppName'), 'routeConfig')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.AppPlatform/Spring/gateways', concat(variables('asaInstanceName'), '/default')]",
+        "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('visitsServiceAppName'))]"
+      ],
+      "properties": {
+        "appResourceId": "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('visitsServiceAppName'))]",
+        "routes": [
+          {
+            "filters": [ "StripPrefix=2" ],
+            "predicates": [ "Path=/api/visit/**" ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.AppPlatform/Spring/gateways/routeConfigs",
+      "apiVersion": "2023-03-01-preview",
+      "name": "[format('{0}/{1}/{2}', variables('asaInstanceName'), variables('frontendAppName'), 'routeConfig')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.AppPlatform/Spring/gateways', concat(variables('asaInstanceName'), '/default')]",
+        "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]",
+        "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('frontendAppName'))]"
+      ],
+      "properties": {
+        "appResourceId": "[resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('frontendAppName'))]",
+        "routes": [
+          {
+            "filters": [ "StripPrefix=0" ],
+            "predicates": [ "Path=/**" ],
+            "order": 1000
+          }
+        ]
+      }
+    },
+    {
       "type": "Microsoft.AppPlatform/Spring/serviceRegistries",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]"
@@ -1895,7 +1919,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/apiPortals",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring', variables('asaInstanceName'))]",
@@ -1916,7 +1940,7 @@
     },
     {
       "type": "Microsoft.AppPlatform/Spring/buildServices/agentPools",
-      "apiVersion": "2023-05-01-preview",
+      "apiVersion": "2023-11-01-preview",
       "name": "[concat(variables('asaInstanceName'), '/default/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.AppPlatform/Spring/buildServices', variables('asaInstanceName'), 'default')]"
@@ -1968,11 +1992,11 @@
   "outputs": {
     "API Gateway URL": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('apiGatewayAppName')), '2023-05-01-preview').url]"
+      "value": "[reference(resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('frontendAppName')), '2023-11-01-preview').url]"
     },
     "Admin Server URL": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('adminServerAppName')), '2023-05-01-preview').url]"
+      "value": "[reference(resourceId('Microsoft.AppPlatform/Spring/apps', variables('asaInstanceName'), variables('adminServerAppName')), '2023-11-01-preview').url]"
     }
   }
 }
